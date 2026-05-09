@@ -2,7 +2,7 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 async function run(prompt) {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
     {
       method: "POST",
       headers: {
@@ -19,6 +19,11 @@ async function run(prompt) {
   );
 
   const data = await response.json();
+
+  if (!response.ok) {
+    console.error("API Error:", data.error);
+    throw new Error(data.error?.message || "API request failed");
+  }
 
   console.log(data);
 
